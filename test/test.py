@@ -13,7 +13,7 @@ class index:
 	{"response": {
          "outputSpeech": {
          "type": "PlainText",
-         "text": "Bitches be trippin"
+         "text": "We can't reach it Sarah"
          },
          "shouldEndSession": true
        }
