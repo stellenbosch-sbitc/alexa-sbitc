@@ -8,6 +8,11 @@ urls = (
 # Hardcoded responses in the format
 # "IntentName" : "Desired Response"
 responses = {
+	"Address" :	"The closest bus stop to thirty long street is Upper loop", 
+	"Route" :	"You should take bus number thirty four which arrives in fifteen minutes",
+	"Cost" :	"It will cost twelve rand",
+	"Time" :	"The bus will arrive in fifteen minutes",
+	"Payment":	"You can purchase a ticket at the nearest Pick and Pay"
 }
 
 class index:
