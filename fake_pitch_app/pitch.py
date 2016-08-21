@@ -15,23 +15,26 @@ responses = {
 	"Payment":	"You can purchase a ticket at the nearest Pick and Pay"
 }
 
+def build_response(text):
+	return """
+	{ "response": {
+		"outputSpeech": {
+			"type": "PlainText",
+			"text": " """ + text + """ "
+		},
+		"shouldEndSession": true
+	}}"""
+	
 class index:
-    def build_response(text):
-        return """
-        { "response": {
-            "outputSpeech": {
-                "type": "PlainText",
-                "text": " """ + text + """ "
-            },
-            "shouldEndSession": true
-        }}"""
-
     def POST(self):
         data = json.loads(web.data())
         if data["request"]["type"] == "IntentRequest":
             intent = data["request"]["intent"]["name"]
-            return build_response(responses[intent])
-        return build_response("")
+            if intent in responses:
+				return build_response(responses[intent])
+            else:
+                return build_response("I did not understand what you asked me.")
+		return build_response("")
 
 if __name__ == "__main__":
     app = web.application(urls, globals())
