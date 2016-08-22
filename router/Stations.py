@@ -33,3 +33,5 @@ class StationList:
 			if self.stations[ID]._AlexaID == AlexaID:
 				return self.stations[ID]
 		return None
+	def getFromStationID(self, ID):
+		return self.stations[ID]

@@ -25,6 +25,32 @@ def build_response(text, endSession = True):
     return response + """
     }}"""
 
+def build_instructions(route, stations):
+    i = 0
+    end = route[-1].EndID
+    instruction = ""
+    while (i < len(route)):
+        startBus = route[i].Bus
+        startStation = route[i].StartID
+        while ((i < len(route)) and (route[i].Bus == startBus)):
+            i += 1
+        if (i < len(route)):
+            instruction += "Take bus " + str(startBus) + " from "
+            instruction += stations.getFromStationID(startStation)._name
+            instruction += " to "
+            startBus = route[i].Bus
+            startStation = route[i].StartID
+            instruction += stations.getFromStationID(startStation)._name + ". "
+        else:
+            instruction += "Take bus " + str(startBus) + " from "
+            instruction += stations.getFromStationID(startStation)._name
+            instruction += " to "
+            instruction += stations.getFromStationID(end)._name + "."
+    return instruction
+
+
+
+
 class index:
     def POST(self):
         stations = Stations.StationList()
@@ -50,7 +76,10 @@ class index:
                 Map = Graph.Graph();
                 Map.loadFromDatabase(db)
                 route = Map.Dijkstra(station._ID, closest._ID)
-                return build_response("Go to " + closest._name + " station")
+                instructions = build_instructions(route, stations)
+                print instructions
+                #return build_response("Go to " + closest._name + " station")
+                return build_response(instructions)
             elif (intent == "Interest"):
                 address = \
                     data["request"]["intent"]["slots"]["Address"]["value"]
