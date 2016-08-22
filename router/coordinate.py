@@ -22,14 +22,14 @@ class Coordinate:
 	def distance(self, other):
 		#www.movable-type.co.uk/scripts/latlong.html
 		R = 6371*10**3
-		p1 = self.lat*Math.pi/180
-		p2 = other.lat*Math.pi/180
-		d1 = (other.lat-self.lat)*Math.pi/180
-		d2 = (other.long-self.long)*Math.pi/180
-		a = Math.sin(d1/2)*Math.sin(d1/2) + Math.cos(p1)*Math.cos(p2)*Math.sin(d2)*Math.sin(d2)
-		c = 2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
-		d = R*c
-		return d
+		p1 = self.lat*math.pi/180
+		p2 = other.lat*math.pi/180
+		d1 = (other.lat-self.lat)*math.pi/180
+		d2 = (other.long-self.long)*math.pi/180
+		a =	math.sin(d1/2)*math.sin(d1/2)+math.cos(p1)*math.cos(p2)*math.sin(d2)*math.sin(d2)
+		c = 2*math.atan2(math.sqrt(a),math.sqrt(1-a))
+		d =	R*c
+		return	d
 
 	def toString(self):
 		return "(" + str(self.long) + ", " + str(self.lat) + ")"

@@ -15,14 +15,14 @@ class StationList:
 		for item in database.fetchall(\
 			"SELECT * FROM Stations;"):
 			self.stations[int(item[0])] = Station(\
-				int(item[0]), item[1], item[2], float(item[3]), float(item[4]))
+				int(item[0]), item[1], item[2], float(item[4]), float(item[3]))
 	def getClosestStation(self, coords):
+		if (coords == None): return None
 		minDist = None
 		minID = None
 		for ID in self.stations:
 			dist = coords.distance(self.stations[ID].coordinates)
 			print ID
-			print self.stations[ID]._name
 			print dist
 			if (minDist == None) or (dist < minDist):
 				minDist = dist

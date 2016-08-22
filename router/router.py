@@ -3,6 +3,8 @@ import json
 import Database
 import coordinate
 import Stations
+import places
+import Graph
 
 urls = (
 	'/alexa', 'index'
@@ -32,19 +34,33 @@ class index:
         data = json.loads(web.data())
         requestType = data["request"]["type"]
         if (requestType == "IntentRequest"):
+            userID = data["session"]["user"]["userId"]
+            station = stations.getFromAlexaID(userID)
+            if station == None: return build_response("I do not know where you are")
             intent = data["request"]["intent"]["name"]
             if (intent == "Location"):
-                userID = data["session"]["user"]["userId"]
-                station = stations.getFromAlexaID(userID)
-                if station == None: return build_response("I do not know where you are")
                 return build_response("You are at " + station._name + " station.")
             elif (intent == "Directions"):
                 address = \
                     data["request"]["intent"]["slots"]["Address"]["value"]
-                print address
                 coords = coordinate.fromAddress(address)
-                print str(coordinate.fromAddress(address).toString())
-                print stations.getClosestStation(coords)._name
+                closest = stations.getClosestStation(coords)
+                if (closest == None):
+                    return build_response("I am not sure where that is")
+                Map = Graph.Graph();
+                Map.loadFromDatabase(db)
+                route = Map.Dijkstra(station._ID, closest._ID)
+                return build_response("Go to " + closest._name + " station")
+            elif (intent == "Interest"):
+                address = \
+                    data["request"]["intent"]["slots"]["Address"]["value"]
+                print address
+                shopNames =  places.find_nearby_places(address)
+                if len(shopNames) == 0:
+                    return build_response("I could not find anything for you")
+                print shopNames[0]
+                return build_response("Why not try " + shopNames[0] + "?")
+                #print shopLocations[0]
         return  build_response("")
 	
 if __name__ == "__main__":
