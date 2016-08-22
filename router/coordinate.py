@@ -16,8 +16,11 @@ def fromAddress(address):
 class Coordinate:
 	def __init__(self, latitude=0, longitude=0):
 		self.lat = latitude
-		sel.long = longitude
+		self.long = longitude
 
 	def distance(self, other):
 		#Cape Town is flat :P
 		return ((self.lat-other.lat)**2 + (self.long-other.long)**2)**0.5
+
+	def toString(self):
+		return "(" + str(self.long) + ", " + str(self.lat) + ")"
