@@ -1,4 +1,5 @@
 import requests
+import math
 
 def fromAddress(address):
 	my_api_key = 'AIzaSyC9ZPnhBLoe4SZmkghgQKUJrDKtm2Cu-iE'
@@ -19,8 +20,16 @@ class Coordinate:
 		self.long = longitude
 
 	def distance(self, other):
-		#Cape Town is flat :P
-		return ((self.lat-other.lat)**2 + (self.long-other.long)**2)**0.5
+		#www.movable-type.co.uk/scripts/latlong.html
+		R = 6371*10**3
+		p1 = self.lat*Math.pi/180
+		p2 = other.lat*Math.pi/180
+		d1 = (other.lat-self.lat)*Math.pi/180
+		d2 = (other.long-self.long)*Math.pi/180
+		a = Math.sin(d1/2)*Math.sin(d1/2) + Math.cos(p1)*Math.cos(p2)*Math.sin(d2)*Math.sin(d2)
+		c = 2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+		d = R*c
+		return d
 
 	def toString(self):
 		return "(" + str(self.long) + ", " + str(self.lat) + ")"
